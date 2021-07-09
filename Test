@@ -1,0 +1,126 @@
+#pragma once
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <iomanip>
+
+
+struct Point {
+    //public:
+    Point() : Point(0, 0) { }
+    Point(double x, double y) : x_(x), y_(y) { }
+
+    Point operator+(const Point& other) { return Point(x_ + other.x_, y_ + other.y_); }
+    Point operator-(const Point& other) { return Point(x_ - other.x_, y_ - other.y_); }
+    void operator+=(const Point& other) { x_ += other.x_;  y_ += other.y_; }
+    void operator-=(const Point& other) { x_ -= other.x_;  y_ -= other.y_; }
+    void moveto(const Point& other) { *this = other; }
+    double distance(const Point& other) {
+        double delx = x_ - other.x_;
+        double dely = y_ - other.y_;
+        return sqrt(delx * delx + dely * dely);
+
+    }
+
+    friend std::ostream& operator<< (std::ostream& os, const Point& p) {
+        return os << "(" << std::setw(2) << p.x_ << "," << std::setw(2) << p.y_ << ")";
+    }
+
+    static void test() {
+        Point pt;
+        Point pt2(-2, 3);
+        Point pt3(1, 10);
+        std::cout << "pt is: " << pt << "\n";
+        std::cout << "pt2 is: " << pt2 << "\n";
+
+        std::cout << pt << " + " << pt2 << " is: " << pt + pt2 << "\n";
+        std::cout << pt << " - " << pt2 << " is: " << pt - pt2 << "\n";
+
+        pt += pt3;
+        std::cout << "after adding " << pt3 << " to " << pt << "...\n";
+        std::cout << "pt is now: " << pt << "\n";
+        std::cout << pt << " + " << pt2 << " is: " << pt + pt2 << "\n";
+
+        std::cout << "pt.x is: " << pt.x_ << "\n";
+    }
+
+    //private:
+    double x_, y_;
+};
+
+
+
+class Shape {
+public:
+    Shape()
+        : Shape(Point()) {}
+    Shape(const Point& center)
+        : center_(center) { }
+
+    Point center() const { return center_; }
+    void   center(const Point& center) { center_ = center; }
+
+    virtual double area() const = 0;
+    virtual double peri() const = 0;
+
+    friend std::ostream& operator<< (std::ostream& os, const Shape& s) {
+        return os
+            << ", ctr=" << s.center()
+            << ", area=" << std::setw(4) << s.area()
+            << ", peri=" << std::setw(4) << s.peri() << ")";
+    }
+
+private:
+    Point center_;
+};
+
+
+class Rectangle : public Shape {
+public:
+    Rectangle()
+   
+    Rectangle(double length, double width)
+     
+    Rectangle(double length, double width, const Point& center)
+      
+
+    double length() const {
+    return lengths;
+    }
+    double width()  const {
+    return widths;
+    }
+
+    void   length(double length) {
+    lengths = length;
+    }
+    void   width(double width) {
+    widths = width;
+    }
+
+    double area() const 
+    {
+    return lengths * widths; 
+    }
+    double peri() const {
+    return 2 * lengths + 2 * widths; 
+    }
+
+    friend std::ostream& operator<< (std::ostream& os, const Rectangle& r) {
+        return os << "Rectangle(l="
+            << std::setw(3) << r.length_
+            << ", w=" << std::setw(3) << r.width_
+            << dynamic_cast<const Shape&>(r);
+    }
+
+    static void test() {
+        Rectangle r, r2(10, 5), r3(5, 2, Point(-3, -2));
+        std: :cout << "r is: " << r << "/n";
+        std: :cout << "r2 is: " << r2 << "/n";
+        std: :cout << "r3 is: " << r3 << "/n";
+    }
+
+private:
+    double length_;
+    double width_;
+};
