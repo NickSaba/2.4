@@ -78,9 +78,9 @@ private:
 class Rectangle : public Shape {
 public:
     Rectangle()
-   
+   :Rectangle(0,0) {}
     Rectangle(double length, double width)
-     
+   :Rectangle(length, width, Point ()) 
     Rectangle(double length, double width, const Point& center)
       
 
@@ -124,3 +124,54 @@ private:
     double length_;
     double width_;
 };
+
+class Triangle : public Shape {
+public:
+    Triangle()
+   :Triangle(0,0) {}
+    Triangle(double length, double height)
+   :Triangle(length, height, Point ()) {}
+    Triangle(double length, double height, const Point& center)
+   :Shape(center), heights(height), lengths(length) {}
+
+    double length() const {
+    return lengths;
+    }
+    double height()  const {
+    return heights;
+    }
+
+    void   length(double length) {
+    lengths = length;
+    }
+    void   height(double height) {
+    height = height;
+    }
+
+    double area() const 
+    {
+    return lengths * heights /2; 
+    }
+    double peri() const {
+    return sqrt(heights * heights + lengths * lengths + heights * lengths; 
+    }
+
+    friend std::ostream& operator<< (std::ostream& os, const Triangle& r) {
+        return os << "Triangle(l="
+            << std::setw(3) << r.length_
+            << ", w=" << std::setw(3) << r.width_
+            << dynamic_cast<const Shape&>(r);
+    }
+
+    static void test() {
+        Rectangle r, r2(10, 5), r3(5, 2, Point(-3, -2));
+        std: :cout << "r is: " << r << "/n";
+        std: :cout << "r2 is: " << r2 << "/n";
+        std: :cout << "r3 is: " << r3 << "/n";
+    }
+
+private:
+    double lengths;
+    double heights;
+};
+
